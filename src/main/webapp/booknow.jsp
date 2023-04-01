@@ -1,6 +1,7 @@
 <%@ page import="com.java.chandanahotelandlodging.entities.Room" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.java.chandanahotelandlodging.dataaccessobject.RoomDao" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!doctype html>
 <html lang="en">
@@ -31,7 +32,21 @@
 <body>
 
 <%
-    List<Room> rooms = RoomDao.getAllRooms();
+    List<Room> rooms = new ArrayList<>();
+    try
+    {
+        String in_date = request.getParameter("in_date");
+        String out_date = request.getParameter("out_date");
+
+        if(in_date == null || out_date == null)
+            rooms = RoomDao.getAllRooms();
+        else
+            rooms = RoomDao.getAvailableRooms(in_date, out_date);
+    }
+    catch (Exception e)
+    {
+        rooms = RoomDao.getAllRooms();
+    }
 
 %>
 
@@ -111,28 +126,30 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="d-flex" style="align-items: center; gap: 1vw;">
-                                    <label for="check-in_date"
-                                           style="font-family: 'Merriweather'; margin: 0; text-align: center;">Check In
-                                        Date</label>
-                                    <input placeholder="Select date" type="date" class="form-control"
-                                           style="width: 180px;" id="check-in_date" name="check-in_date">
+                        <form action="filterServlet" method="post">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="d-flex" style="align-items: center; gap: 1vw;">
+                                        <label for="check-in_date"
+                                               style="font-family: 'Merriweather'; margin: 0; text-align: center;">Check In
+                                            Date</label>
+                                        <input placeholder="Select date" type="date" class="form-control"
+                                               style="width: 180px;" id="check-in_date" name="check-in_date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="d-flex" style="align-items: center; gap: 1vw; text-align: center;">
+                                        <label for="check-out_date" style="font-family: 'Merriweather'; margin: 0;">Check Out
+                                            Date</label>
+                                        <input placeholder="Select date" type="date" class="form-control"
+                                               style="width: 180px;" id="check-out_date" name="check-out_date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="submit" class="btn button btn-warning p-2" id="check_availability_button">Check</button>
                                 </div>
                             </div>
-                            <div class="col-sm-5">
-                                <div class="d-flex" style="align-items: center; gap: 1vw; text-align: center;">
-                                    <label for="check-out_date" style="font-family: 'Merriweather'; margin: 0;">Check Out
-                                        Date</label>
-                                    <input placeholder="Select date" type="date" class="form-control"
-                                           style="width: 180px;" id="check-out_date" name="check-out_date">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <button type="button" class="btn button btn-warning p-2" id="check_availability_button">Check</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -304,6 +321,7 @@
 </script>
 
 
+<%--
 <script>
 
     $(document).ready(function (e) {
@@ -336,11 +354,16 @@
 
             var url = window.location.href;
             // alert(url)
+            url += "?in_date="+check_in_date+"&out_date="+check_out_date
+            // alert(url)
+            // http://localhost:8080/ChandanaHotelAndLodging_Maven_Final_war_exploded/booknow.jsp?in_date=2023-03-30&out_date=2023-04-02
+            window.location.href = url;
 
         })
     });
 
 </script>
+--%>
 
 </body>
 </html>
