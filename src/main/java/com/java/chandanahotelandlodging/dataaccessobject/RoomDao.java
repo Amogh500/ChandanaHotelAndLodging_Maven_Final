@@ -46,16 +46,18 @@ public class RoomDao
         return rooms;
     }
 
-    public static List<Room> getAvailableRooms(String dateIn, String dateOut)
+    public static List<Room> getAvailableRooms(String dateIn, String dateOut, String filter_price)
     {
-        ArrayList<Room> rooms = null;
+//        ArrayList<Room> rooms = null;
+        ArrayList<Room> rooms = new ArrayList<>();
         try
         {
-            String query = "SELECT r.* FROM room r WHERE r.NUMBER NOT IN ( SELECT b.room_number FROM reservation b WHERE NOT ( b.date_in >= ? OR b.date_out <= ? ) )";
+            String query = "SELECT r.* FROM room r WHERE r.NUMBER NOT IN ( SELECT b.room_number FROM reservation b WHERE NOT ( b.date_in >= ? OR b.date_out <= ? ) ) and cast(r.price as UNSIGNED)<=cast(? as UNSIGNED)";
             Connection con = ConnectionProvider.getConnection();
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, dateOut);
             stmt.setString(2, dateIn);
+            stmt.setString(3, filter_price);
             ResultSet set = stmt.executeQuery();
 
             Room room=null;

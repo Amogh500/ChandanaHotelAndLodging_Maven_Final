@@ -32,19 +32,20 @@
 <body>
 
 <%
-    List<Room> rooms = new ArrayList<>();
-    try
-    {
-        String in_date = request.getParameter("in_date");
-        String out_date = request.getParameter("out_date");
+    List<Room> rooms;
+    String in_date = null;
+    String out_date = null;
+    String filter_price = null;
+    try {
+        in_date = request.getParameter("in_date");
+        out_date = request.getParameter("out_date");
+        filter_price = request.getParameter("filter_price");
 
-        if(in_date == null || out_date == null)
+        if (in_date == null || out_date == null)
             rooms = RoomDao.getAllRooms();
         else
-            rooms = RoomDao.getAvailableRooms(in_date, out_date);
-    }
-    catch (Exception e)
-    {
+            rooms = RoomDao.getAvailableRooms(in_date, out_date, filter_price);
+    } catch (Exception e) {
         rooms = RoomDao.getAllRooms();
     }
 
@@ -122,11 +123,12 @@
 <%--Check in date Section--%>
 <section>
     <div class="container mt-5">
+<%--        <%= in_date+" "+out_date%>--%>
         <div class="row">
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="filterServlet" method="post">
+<%--                        <form action="filterServlet" method="post">--%>
                             <div class="row">
                                 <div class="col-sm-5">
                                     <div class="d-flex" style="align-items: center; gap: 1vw;">
@@ -146,10 +148,10 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
-                                    <button type="submit" class="btn button btn-warning p-2" id="check_availability_button">Check</button>
+                                    <button type="button" class="btn button btn-warning p-2" id="check_availability_button">Check</button>
                                 </div>
                             </div>
-                        </form>
+<%--                        </form>--%>
                     </div>
                 </div>
             </div>
@@ -166,13 +168,13 @@
                 <div class="form-group">
                     <h4>Pricing</h4>
                     <hr>
-                    <center><label for="num">Max Price: &nbsp; </label><input type="number" min="0" max="1000"
-                                                                              value="1000" id="num"></center>
+                    <center><label for="filter-price">Max Price: &nbsp; </label><input type="number" min="999" max="5000"
+                                                                              value="5000" id="filter-price"></center>
                     <center>
-                        <label for="customRange1">0</label>
-                        <input type="range" class="form-range" id="customRange1" min="0" max="1000" value="1000"
+                        <label for="customRange1">999</label>
+                        <input type="range" class="form-range" id="customRange1" min="999" max="5000" value="5000"
                                style="width: 70%;">
-                        <label for="customRange1">1000</label>
+                        <label for="customRange1">5000</label>
                     </center>
                     <hr>
                 </div>
@@ -228,18 +230,18 @@
         <div class="col-sm-8">
             <center>
 
-                <% for (Room room : rooms){
+                <% for (Room room : rooms) {
                 %>
                 <div class="card mb-3" style="max-width: 5400px; text-align: left">
                     <div class="row g-0">
                         <div class="col-md-4">
-                            <img src="room_pics/<%= room.getRoom_img() %>" class="img-fluid rounded-start" alt="..." style="height: 100%;">
+                            <img src="room_pics/<%=room.getRoom_img()%>" class="img-fluid rounded-start" alt="..." style="height: 100%;">
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">Room <%= room.getNumber() %></h5>
-                                <p class="card-text"><%= room.getDescription() %></p>
-                                <p class="card-text"><span class="text-muted">	&#8377;<%= room.getPrice() %> <s>&#8377;5000</s></span>
+                                <h5 class="card-title">Room <%=room.getNumber()%></h5>
+                                <p class="card-text"><%=room.getDescription()%></p>
+                                <p class="card-text"><span class="text-muted">	&#8377;<%=room.getPrice()%> <s>&#8377;5000</s></span>
                                 </p>
                                 <button type="button" class="btn btn-warning button">Book Now</button>
                             </div>
@@ -312,16 +314,16 @@
 <script>
     document.querySelector('#customRange1').oninput = () => {
         let value = document.querySelector('#customRange1').value;
-        document.querySelector('#num').value = value;
+        document.querySelector('#filter-price').value = value;
     }
-    document.querySelector('#num').oninput = () => {
-        let value = document.querySelector('#num').value;
+    document.querySelector('#filter-price').oninput = () => {
+        let value = document.querySelector('#filter-price').value;
         document.querySelector('#customRange1').value = value;
     }
 </script>
 
 
-<%--
+
 <script>
 
     $(document).ready(function (e) {
@@ -333,6 +335,7 @@
 
             let check_in_date = $("#check-in_date").val()
             let check_out_date = $("#check-out_date").val()
+            let filter_price = $("#filter-price").val()
 
             // alert(check_in_date)
             // alert(check_out_date)
@@ -354,7 +357,7 @@
 
             var url = window.location.href;
             // alert(url)
-            url += "?in_date="+check_in_date+"&out_date="+check_out_date
+            url += "?in_date="+check_in_date+"&out_date="+check_out_date+"&filter_price="+filter_price
             // alert(url)
             // http://localhost:8080/ChandanaHotelAndLodging_Maven_Final_war_exploded/booknow.jsp?in_date=2023-03-30&out_date=2023-04-02
             window.location.href = url;
@@ -363,7 +366,7 @@
     });
 
 </script>
---%>
+
 
 </body>
 </html>
