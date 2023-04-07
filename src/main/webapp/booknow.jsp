@@ -182,48 +182,49 @@
                     <h4>Room Type</h4>
                     <hr>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <input class="form-check-input" type="checkbox" value="single" id="flexCheckDefault">
                         <label class="form-check-label" for="flexCheckDefault">
                             Single Room
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2">
+                        <input class="form-check-input" type="checkbox" value="double" id="flexCheckChecked2">
                         <label class="form-check-label" for="flexCheckChecked2">
                             Double Room
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                        <input class="form-check-input" type="checkbox" value="delux" id="flexCheckChecked">
                         <label class="form-check-label" for="flexCheckChecked">
                             Deluxe Room
                         </label>
                     </div>
+                    <button type="button" id="filter-room-type" class="btn btn-primary mt-1">Filter</button>
                     <hr>
                 </div>
-                <div class="form-group">
-                    <h4>Services</h4>
-                    <hr>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
-                        <label class="form-check-label" for="flexCheckDefault1">
-                            Breakfast
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4">
-                        <label class="form-check-label" for="flexCheckChecked4">
-                            Dinner
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5">
-                        <label class="form-check-label" for="flexCheckChecked5">
-                            Laundry
-                        </label>
-                    </div>
-                    <hr>
-                </div>
+<%--                <div class="form-group">--%>
+<%--                    <h4>Services</h4>--%>
+<%--                    <hr>--%>
+<%--                    <div class="form-check">--%>
+<%--                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" checked disabled>--%>
+<%--                        <label class="form-check-label" for="flexCheckDefault1">--%>
+<%--                            Breakfast--%>
+<%--                        </label>--%>
+<%--                    </div>--%>
+<%--                    <div class="form-check">--%>
+<%--                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked disabled>--%>
+<%--                        <label class="form-check-label" for="flexCheckChecked4">--%>
+<%--                            Dinner--%>
+<%--                        </label>--%>
+<%--                    </div>--%>
+<%--                    <div class="form-check">--%>
+<%--                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5" checked disabled>--%>
+<%--                        <label class="form-check-label" for="flexCheckChecked5">--%>
+<%--                            Laundry--%>
+<%--                        </label>--%>
+<%--                    </div>--%>
+<%--                    <hr>--%>
+<%--                </div>--%>
             </div>
         </div>
 
@@ -232,7 +233,7 @@
 
                 <% for (Room room : rooms) {
                 %>
-                <div class="card mb-3" style="max-width: 5400px; text-align: left">
+                <div class="card mb-3" style="max-width: 5400px; text-align: left" id="room-<%= room.getNumber() %>">
                     <div class="row g-0">
                         <div class="col-md-4">
                             <img src="room_pics/<%=room.getRoom_img()%>" class="img-fluid rounded-start" alt="..." style="height: 100%;">
@@ -366,6 +367,60 @@
     });
 
 </script>
+
+<script>
+    $(document).ready(function (e) {
+
+        $("#filter-room-type").on("click", function (event) {
+            // Get all checkboxes
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            // Array to store checked values
+            const checkedValues = [];
+
+            // Loop through checkboxes and check if they are checked
+            checkboxes.forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    checkedValues.push(checkbox.value);
+                }
+            });
+
+            // Log the checked values to the console
+            // alert(checkedValues);
+
+            const cards = document.querySelectorAll(".card");
+
+            for(let i=2; i<cards.length; i++)
+            {
+                let card = cards[i];
+                card.removeAttribute("hidden")
+            }
+
+            // alert("ok")
+
+            for(let i=2; i<cards.length; i++)
+            {
+                let f = false;
+                let card = cards[i];
+                let cardtext = card.textContent.trim();
+                checkedValues.forEach(function (checkedValue) {
+                    if(cardtext.includes(checkedValue)){
+                        f = true;
+                        return;
+                    }
+                });
+
+                if(!f){
+                    card.setAttribute("hidden", "true")
+                }
+
+            }
+        });
+    });
+
+</script>
+
+
 
 
 </body>
