@@ -2,7 +2,22 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.java.chandanahotelandlodging.dataaccessobject.RoomDao" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
+<%--&lt;%&ndash;Auth part&ndash;%&gt;--%>
+<%--<%--%>
+<%--    Customer customer = session.getAttribute("customer");--%>
+<%--    if(customer == null)--%>
+<%--    {--%>
+<%--        response.sendRedirect("login.jsp");--%>
+<%--    }--%>
+<%--%>--%>
+
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -31,22 +46,35 @@
 </head>
 <body>
 
-<%
+<%!
+    %><%
     List<Room> rooms;
     String in_date = null;
     String out_date = null;
     String filter_price = null;
+
+    LocalDate today = LocalDate.now().plusDays(1);
+    LocalDate next7thday = LocalDate.now().plusDays(7);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
+
     try {
         in_date = request.getParameter("in_date");
         out_date = request.getParameter("out_date");
         filter_price = request.getParameter("filter_price");
 
-        if (in_date == null || out_date == null)
+        if (in_date == null || out_date == null) {
             rooms = RoomDao.getAllRooms();
+            in_date = today.format(formatter);
+            out_date = next7thday.format(formatter);
+        }
         else
             rooms = RoomDao.getAvailableRooms(in_date, out_date, filter_price);
     } catch (Exception e) {
         rooms = RoomDao.getAllRooms();
+        in_date = today.format(formatter);
+        out_date = next7thday.format(formatter);
     }
 
 %>
@@ -128,7 +156,7 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-<%--                        <form action="filterServlet" method="post">--%>
+
                             <div class="row">
                                 <div class="col-sm-5">
                                     <div class="d-flex" style="align-items: center; gap: 1vw;">
@@ -136,7 +164,7 @@
                                                style="font-family: 'Merriweather'; margin: 0; text-align: center;">Check In
                                             Date</label>
                                         <input placeholder="Select date" type="date" class="form-control"
-                                               style="width: 180px;" id="check-in_date" name="check-in_date">
+                                               style="width: 180px;" id="check-in_date" name="check-in_date" value="<%= in_date %>">
                                     </div>
                                 </div>
                                 <div class="col-sm-5">
@@ -144,14 +172,13 @@
                                         <label for="check-out_date" style="font-family: 'Merriweather'; margin: 0;">Check Out
                                             Date</label>
                                         <input placeholder="Select date" type="date" class="form-control"
-                                               style="width: 180px;" id="check-out_date" name="check-out_date">
+                                               style="width: 180px;" id="check-out_date" name="check-out_date" value="<%= out_date %>">
                                     </div>
                                 </div>
                                 <div class="col-sm-2">
                                     <button type="button" class="btn button btn-warning p-2" id="check_availability_button">Check</button>
                                 </div>
                             </div>
-<%--                        </form>--%>
                     </div>
                 </div>
             </div>
@@ -350,14 +377,16 @@
 
             if(in_date>out_date){
                 swal("Sorry!!", "Check in date can not be greater than Check out date", "error");
+                return;
             }
             else if(in_date< cur_date)
             {
                 swal("Sorry!!", "Check in date can not be older than today's date", "error");
+                return;
             }
 
             var url = window.location.href;
-            // alert(url)
+            url = url.split('?')[0]
             url += "?in_date="+check_in_date+"&out_date="+check_out_date+"&filter_price="+filter_price
             // alert(url)
             // http://localhost:8080/ChandanaHotelAndLodging_Maven_Final_war_exploded/booknow.jsp?in_date=2023-03-30&out_date=2023-04-02
