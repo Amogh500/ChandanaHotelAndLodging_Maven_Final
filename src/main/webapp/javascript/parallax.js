@@ -1,4 +1,4 @@
-location.replace("index.jsp#");
+// location.replace("index.jsp#");
 
 const parallax = document.getElementById('parallax');
 const navbar = document.querySelector('.navbar');

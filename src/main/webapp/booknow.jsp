@@ -94,9 +94,9 @@
             </ul>
             <form class="form-inline my-2 my-lg-0" style="display: flex; justify-content: center;">
                 <div class="button-1" style="padding-left: 1vw;">
-                    <button type="button" class="btn btn-primary d-flex align-items-center button"
+                    <button type="button" onclick="location.href = 'register.jsp'" class="btn btn-primary d-flex align-items-center button"
                             style="color: white;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16"
                              fill="white" class="bi bi-pen-fill" viewBox="0 0 16 16">
                             <path
                                     d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
@@ -122,7 +122,7 @@
 
 <%--Check in date Section--%>
 <section>
-    <div class="container mt-5">
+    <div class="container mt-5" data-aos="fade-right">
 <%--        <%= in_date+" "+out_date%>--%>
         <div class="row">
             <div class="col-sm-12">
@@ -161,8 +161,8 @@
 <%--Check in date Section end--%>
 
 <%--Main section--%>
-<Div class="container my-3">
-    <div class="row">
+<Div class="container my-3 data-aos="fade-right">
+    <div class="row side">
         <div class="col-sm-4">
             <div class="card p-3" >
                 <div class="form-group">
@@ -202,29 +202,6 @@
                     <button type="button" id="filter-room-type" class="btn btn-primary mt-1">Filter</button>
                     <hr>
                 </div>
-<%--                <div class="form-group">--%>
-<%--                    <h4>Services</h4>--%>
-<%--                    <hr>--%>
-<%--                    <div class="form-check">--%>
-<%--                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" checked disabled>--%>
-<%--                        <label class="form-check-label" for="flexCheckDefault1">--%>
-<%--                            Breakfast--%>
-<%--                        </label>--%>
-<%--                    </div>--%>
-<%--                    <div class="form-check">--%>
-<%--                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked disabled>--%>
-<%--                        <label class="form-check-label" for="flexCheckChecked4">--%>
-<%--                            Dinner--%>
-<%--                        </label>--%>
-<%--                    </div>--%>
-<%--                    <div class="form-check">--%>
-<%--                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5" checked disabled>--%>
-<%--                        <label class="form-check-label" for="flexCheckChecked5">--%>
-<%--                            Laundry--%>
-<%--                        </label>--%>
-<%--                    </div>--%>
-<%--                    <hr>--%>
-<%--                </div>--%>
             </div>
         </div>
 
@@ -233,7 +210,7 @@
 
                 <% for (Room room : rooms) {
                 %>
-                <div class="card mb-3" style="max-width: 5400px; text-align: left" id="room-<%= room.getNumber() %>">
+                <div class="card mb-3" style="max-width: 5400px; text-align: left" id="room-<%= room.getNumber() %>" data-aos="fade-up">
                     <div class="row g-0">
                         <div class="col-md-4">
                             <img src="room_pics/<%=room.getRoom_img()%>" class="img-fluid rounded-start" alt="..." style="height: 100%;">
@@ -310,7 +287,24 @@
     AOS.init();
 </script>
 <%--Extra Script End--%>
+<script>
+    window.addEventListener('scroll', () =>{
+        var off = window.pageYOffset;
+        var navbar = document.querySelector('nav')
+        if(navbar.clientHeight<=off){
+            navbar.classList.remove('bg-dark')
+            navbar.classList.add('bg-*');
+            navbar.setAttribute('style', 'width: 100%; position: fixed; cursor: pointer; background-color: rgba(0, 0, 0, 0.6);width: 100%; backdrop-filter: blur(8px);')
 
+        } else {
+            navbar.classList.remove('bg-*');
+            navbar.classList.add("bg-dark");
+            navbar.classList.remove('transparent');
+            navbar.setAttribute('style', 'width: 100%; position: fixed; cursor: pointer;')
+
+        }
+    })
+</script>
 
 <script>
     document.querySelector('#customRange1').oninput = () => {

@@ -66,7 +66,7 @@
                 </ul>
                 <form class="form-inline my-2 my-lg-0" style="display: flex; justify-content: center;">
                     <div class="button-1" style="padding-left: 1vw;">
-                        <button type="button" class="btn btn-primary d-flex align-items-center button"
+                        <button type="button"  class="btn btn-primary d-flex align-items-center button"
                             style="color: white;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                 fill="white" class="bi bi-pen-fill" viewBox="0 0 16 16">
                                 <path

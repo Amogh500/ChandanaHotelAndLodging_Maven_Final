@@ -65,6 +65,11 @@ button{
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
+.transparent{
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+}
+
 @media (max-width: 530px){
     .hero{
         font-size: small;
@@ -93,5 +98,11 @@ button{
     .card-deck{
         display: flex;
         flex-direction: column;
+    }
+}
+
+@media (max-width: 1009px) {
+    div.side{
+        display: none;
     }
 }
