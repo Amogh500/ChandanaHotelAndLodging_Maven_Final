@@ -40,7 +40,7 @@ public class RegisterServlet extends HttpServlet
         String type = request.getParameter("type");
         String id_no = request.getParameter("idno");
 
-        Customer c = new Customer(name, email, address, phone, password, type, id_no);
+        Customer c = new Customer(name, email, address, phone, password, type, id_no, 0);
 
         PrintWriter out = response.getWriter();
         try

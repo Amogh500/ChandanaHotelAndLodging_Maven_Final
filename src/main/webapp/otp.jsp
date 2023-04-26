@@ -78,7 +78,7 @@
                     </button>
                 </div>
                 <div class="button-2">
-                    <button type="button" class="btn btn-info d-flex align-items-center button"
+                    <button type="button" onclick="location.href = 'login.jsp'" class="btn btn-info d-flex align-items-center button"
                             style="color: white;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                              fill="white" class="bi bi-key-fill" viewBox="0 0 16 16">
@@ -167,19 +167,38 @@
             .random() * (maxm - minm + 1)) + minm;
     }
     let otp = generateRandomNumber();
-    let email_id = (window.location.href).split('?')[1];
-    Email.send({
-        Host: "smtp.elasticemail.com",
-        Username: "amogh.shri2009@gmail.com",
-        Password: "5E5D4CA5D2B672A06714C64EE611F66F57EC",
-        To: email_id,
-        From: "amogh.shri2009@gmail.com",
-        Subject: "Your One Time Password",
-        Body: otp,
-    })
-        .then(function (message) {
-            console.log(otp);
-        });
+    let email_id = (window.location.href).split('?')[1].split('_')[0];
+    let token = (window.location.href).split('?')[1].split('_')[1];
+    if(token === 'login'){
+        let el = email_id.split('=')[0];
+        alert(el);
+        Email.send({
+            Host: "smtp.elasticemail.com",
+            Username: "amogh.shri2009@gmail.com",
+            Password: "5E5D4CA5D2B672A06714C64EE611F66F57EC",
+            To: el,
+            From: "amogh.shri2009@gmail.com",
+            Subject: "Your One Time Password",
+            Body: otp,
+        })
+            .then(function (message) {
+                console.log(otp);
+            });
+    } else{
+        Email.send({
+            Host: "smtp.elasticemail.com",
+            Username: "amogh.shri2009@gmail.com",
+            Password: "5E5D4CA5D2B672A06714C64EE611F66F57EC",
+            To: email_id,
+            From: "amogh.shri2009@gmail.com",
+            Subject: "Your One Time Password",
+            Body: otp,
+        })
+            .then(function (message) {
+                console.log(otp);
+            });
+    }
+
     $(document).ready(function () {
         $("form").submit(function (event) {
             // Data
@@ -201,33 +220,63 @@
             }
 
             // Ajax
-            $.ajax({
-                type: "POST",
-                url: "verifyingServlet",
-                data: data,
-                success: function (data, textStatus, jqXHR) {
-                    if (data.trim() === "Failure") {
-                        $('form').trigger('reset');
-                        swal({
-                            title: "Oops! Something went wrong",
-                            text: "We are sorry for the inconvenience",
-                            icon: "error",
-                            button: "Close",
-                        });
-                    } else{
-                        $('form').trigger('reset');
-                        swal({
-                            title: "You are registered",
-                            text: "Go to login page and login",
-                            icon: "success",
-                            button: "Close",
-                        });
+            if(token === 'register'){
+                $.ajax({
+                    type: "POST",
+                    url: "verifyingServlet",
+                    data: data,
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.trim() === "Failure") {
+                            $('form').trigger('reset');
+                            swal({
+                                title: "Oops! Something went wrong",
+                                text: "We are sorry for the inconvenience",
+                                icon: "error",
+                                button: "Close",
+                            });
+                        } else{
+                            $('form').trigger('reset');
+                            swal({
+                                title: "You are registered",
+                                text: "Go to login page and login",
+                                icon: "success",
+                                button: "Close",
+                            });
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(data);
                     }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(data);
-                }
-            });
+                });
+            }
+            if(token === 'login'){
+                $.ajax({
+                    type: "POST",
+                    url: "loginServlet",
+                    data: {
+                        'email' : email_id.split('=')[0],
+                        'pwd' : email_id.split('=')[1]
+                    },
+                    success: function (data, textStatus, jqXHR) {
+                        console.log(data);
+                        if (data.trim() === "Failure") {
+                            $('form').trigger('reset');
+                            swal({
+                                title: "Oops! Something went wrong",
+                                text: "We are sorry for the inconvenience",
+                                icon: "error",
+                                button: "Close",
+                            });
+                        } if(data.trim() === "Success") {
+                            $('form').trigger('reset');
+                            location.href = 'booknow.jsp';
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(data);
+                    }
+                });
+            }
             event.preventDefault();
         });
 

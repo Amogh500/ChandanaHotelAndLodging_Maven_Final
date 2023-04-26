@@ -10,7 +10,16 @@ public class Customer {
     private String c_id_type;
     private String c_id_number;
 
-    public Customer(String c_name, String c_email, String c_address, String c_phone, String c_pwd, String c_id_type, String c_id_number){
+    private int is_verified = 0;
+
+    public int getIs_verified() {
+        return is_verified;
+    }
+
+    public void setIs_verified(int is_verified) {
+        this.is_verified = is_verified;
+    }
+    public Customer(String c_name, String c_email, String c_address, String c_phone, String c_pwd, String c_id_type, String c_id_number, int is_verified) {
         this.c_name = c_name;
         this.c_email = c_email;
         this.c_address = c_address;
@@ -18,8 +27,8 @@ public class Customer {
         this.c_pwd = c_pwd;
         this.c_id_type = c_id_type;
         this.c_id_number = c_id_number;
+        this.is_verified = is_verified;
     }
-
     public Customer(){
 
     }

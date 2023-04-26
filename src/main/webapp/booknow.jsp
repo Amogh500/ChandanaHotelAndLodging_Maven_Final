@@ -2,7 +2,10 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.java.chandanahotelandlodging.dataaccessobject.RoomDao" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.java.chandanahotelandlodging.entities.Customer" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -104,7 +107,7 @@
                     </button>
                 </div>
                 <div class="button-2">
-                    <button type="button" class="btn btn-info d-flex align-items-center button"
+                    <button type="button" onclick="location.href = 'login.jsp'" class="btn btn-info d-flex align-items-center button"
                             style="color: white;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                              fill="white" class="bi bi-key-fill" viewBox="0 0 16 16">

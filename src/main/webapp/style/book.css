@@ -100,9 +100,3 @@ button{
         flex-direction: column;
     }
 }
-
-@media (max-width: 1009px) {
-    div.side{
-        display: none;
-    }
-}

@@ -6,6 +6,7 @@ import com.java.chandanahotelandlodging.helper.ConnectionProvider;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class CustomerDAO {
     public static boolean saveCustomer(Customer customer){
@@ -46,5 +47,73 @@ public class CustomerDAO {
             e.printStackTrace();
         }
         return res;
+    }
+    public static Customer findCustomerByEmailAndPwd(String email, String pwd) {
+        Customer customer = null;
+        try {
+            Connection con = ConnectionProvider.getConnection();
+            String query = "SELECT * FROM CUSTOMER WHERE C_EMAIL= ? AND C_PWD = ?";
+
+
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, email);
+            pstmt.setString(2, pwd);
+
+            ResultSet set = pstmt.executeQuery();
+
+            while (set.next()) {
+                customer = new Customer(set.getString(1), set.getString(2), set.getString(3), set.getString(4), set.getString(5),  set.getString(7),  set.getString(8), set.getInt(9));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return customer;
+    }
+
+    public static boolean updatePasswordbyEmail(String email, String pwd) {
+        boolean f = false;
+        try
+        {
+            Connection con = ConnectionProvider.getConnection();
+            String query = "UPDATE Customer SET C_PWD = ? WHERE C_EMAIL = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, pwd);
+            pstmt.setString(2, email);
+
+            pstmt.executeUpdate();
+
+            f = true;
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+            return f;
+        }
+        return f;
+    }
+
+    public static boolean doesEmailExist(String email)
+    {
+        boolean f = false;
+        try
+        {
+            Connection con = ConnectionProvider.getConnection();
+            String query = "SELECT * FROM CUSTOMER WHERE C_EMAIL = ?";
+            PreparedStatement pstmt = con.prepareStatement(query);
+            pstmt.setString(1, email);
+            ResultSet set = pstmt.executeQuery();
+
+            if(set.next())
+            {
+                f = true;
+            }
+
+            return f;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return f;
+        }
     }
 }
