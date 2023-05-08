@@ -46,8 +46,7 @@
 </head>
 <body>
 
-<%!
-    %><%
+<%
     List<Room> rooms;
     String in_date = null;
     String out_date = null;
@@ -68,6 +67,7 @@
             rooms = RoomDao.getAllRooms();
             in_date = today.format(formatter);
             out_date = next7thday.format(formatter);
+            filter_price = "5000";
         }
         else
             rooms = RoomDao.getAvailableRooms(in_date, out_date, filter_price);
@@ -115,14 +115,14 @@
                        style="font-family: 'Merriweather', serif; color: white;">Contact Us</a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link item6" href="book.jsp#"
+                    <a class="nav-link item6" href="booknow.jsp"
                        style="font-family: 'Merriweather', serif; color: white;">Book
                         Now</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" style="display: flex; justify-content: center;">
                 <div class="button-1" style="padding-left: 1vw;">
-                    <button type="button" class="btn btn-primary d-flex align-items-center button"
+                    <button onclick = "location.href = 'register.jsp'" type="button" class="btn btn-primary d-flex align-items-center button"
                             style="color: white;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                              fill="white" class="bi bi-pen-fill" viewBox="0 0 16 16">
@@ -132,7 +132,7 @@
                     </button>
                 </div>
                 <div class="button-2">
-                    <button type="button" class="btn btn-info d-flex align-items-center button"
+                    <button onclick = "location.href = 'login.jsp'" type="button" class="btn btn-info d-flex align-items-center button"
                             style="color: white;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                              fill="white" class="bi bi-key-fill" viewBox="0 0 16 16">
@@ -196,7 +196,7 @@
                     <h4>Pricing</h4>
                     <hr>
                     <center><label for="filter-price">Max Price: &nbsp; </label><input type="number" min="999" max="5000"
-                                                                              value="5000" id="filter-price"></center>
+                                                                              value="<%= filter_price %>" id="filter-price"></center>
                     <center>
                         <label for="customRange1">999</label>
                         <input type="range" class="form-range" id="customRange1" min="999" max="5000" value="5000"
@@ -229,29 +229,6 @@
                     <button type="button" id="filter-room-type" class="btn btn-primary mt-1">Filter</button>
                     <hr>
                 </div>
-<%--                <div class="form-group">--%>
-<%--                    <h4>Services</h4>--%>
-<%--                    <hr>--%>
-<%--                    <div class="form-check">--%>
-<%--                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" checked disabled>--%>
-<%--                        <label class="form-check-label" for="flexCheckDefault1">--%>
-<%--                            Breakfast--%>
-<%--                        </label>--%>
-<%--                    </div>--%>
-<%--                    <div class="form-check">--%>
-<%--                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4" checked disabled>--%>
-<%--                        <label class="form-check-label" for="flexCheckChecked4">--%>
-<%--                            Dinner--%>
-<%--                        </label>--%>
-<%--                    </div>--%>
-<%--                    <div class="form-check">--%>
-<%--                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5" checked disabled>--%>
-<%--                        <label class="form-check-label" for="flexCheckChecked5">--%>
-<%--                            Laundry--%>
-<%--                        </label>--%>
-<%--                    </div>--%>
-<%--                    <hr>--%>
-<%--                </div>--%>
             </div>
         </div>
 
@@ -271,7 +248,7 @@
                                 <p class="card-text"><%=room.getDescription()%></p>
                                 <p class="card-text"><span class="text-muted">	&#8377;<%=room.getPrice()%> <s>&#8377;5000</s></span>
                                 </p>
-                                <button type="button" class="btn btn-warning button">Book Now</button>
+                                <button type="button" class="btn btn-warning button" onclick="checkout(<%= room.getNumber() %> , <%= in_date.replace("-","") %>, <%= out_date.replace("-","") %>)">Book Now</button>
                             </div>
                         </div>
                     </div>
@@ -449,6 +426,47 @@
 
 </script>
 
+<script>
+
+
+    function checkout(roomnumber, inDAte, outDate)
+    {
+        // alert(roomnumber+" "+inDAte+" "+outDate)
+
+        let url = window.location.href;
+
+        let index = url.lastIndexOf("/");
+        url = url.substring(0, index+1);
+        url = url+"checkout.jsp?room="+roomnumber+"&in_date="+inDAte+"&out_date="+outDate
+
+
+        // alert(url)
+        window.location.href = url;
+
+
+
+    }
+
+</script>
+
+<script>
+    window.addEventListener('scroll', () =>{
+        var off = window.pageYOffset;
+        var navbar = document.querySelector('nav')
+        if(navbar.clientHeight<=off){
+            navbar.classList.remove('bg-dark')
+            navbar.classList.add('bg-*');
+            navbar.setAttribute('style', 'width: 100%; position: fixed; cursor: pointer; background-color: rgba(0, 0, 0, 0.6);width: 100%; backdrop-filter: blur(8px);')
+
+        } else {
+            navbar.classList.remove('bg-*');
+            navbar.classList.add("bg-dark");
+            navbar.classList.remove('transparent');
+            navbar.setAttribute('style', 'width: 100%; position: fixed; cursor: pointer;')
+
+        }
+    })
+</script>
 
 
 

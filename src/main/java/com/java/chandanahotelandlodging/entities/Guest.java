@@ -7,34 +7,43 @@ public class Guest {
     private String g_phone;
     private String g_id_type;
     private String g_id_ref;
-    private String g_pay_id;
 
-    public Guest(int g_id, String g_name, String g_email, String g_phone, String g_id_type, String g_id_ref, String g_pay_id) {
+    private String check_in;
+
+    private String check_out;
+    private String order_id;
+
+
+    public Guest() {
+    }
+
+    public Guest(String g_name, String g_email, String g_phone, String g_id_type, String g_id_ref, String check_in, String check_out, String order_id) {
+        this.g_name = g_name;
+        this.g_email = g_email;
+        this.g_phone = g_phone;
+        this.g_id_type = g_id_type;
+        this.g_id_ref = g_id_ref;
+        this.check_in = check_in;
+        this.check_out = check_out;
+        this.order_id = order_id;
+    }
+
+    public Guest(int g_id, String g_name, String g_email, String g_phone, String g_id_type, String g_id_ref, String check_in, String check_out, String order_id) {
         this.g_id = g_id;
         this.g_name = g_name;
         this.g_email = g_email;
         this.g_phone = g_phone;
         this.g_id_type = g_id_type;
         this.g_id_ref = g_id_ref;
-        this.g_pay_id = g_pay_id;
-    }
-    public Guest(String g_name, String g_email, String g_phone, String g_id_type, String g_id_ref, String g_pay_id)
-    {
-        this.g_name = g_name;
-        this.g_email = g_email;
-        this.g_phone = g_phone;
-        this.g_id_type = g_id_type;
-        this.g_id_ref = g_id_ref;
-        this.g_pay_id = g_pay_id;
-    }
-    public Guest()
-    {
-
+        this.check_in = check_in;
+        this.check_out = check_out;
+        this.order_id = order_id;
     }
 
     public int getG_id() {
         return g_id;
     }
+
 
     public String getG_name() {
         return g_name;
@@ -76,12 +85,28 @@ public class Guest {
         this.g_id_ref = g_id_ref;
     }
 
-    public String getG_pay_id() {
-        return g_pay_id;
+    public String getCheck_in() {
+        return check_in;
     }
 
-    public void setG_pay_id(String g_pay_id) {
-        this.g_pay_id = g_pay_id;
+    public void setCheck_in(String check_in) {
+        this.check_in = check_in;
+    }
+
+    public String getCheck_out() {
+        return check_out;
+    }
+
+    public void setCheck_out(String check_out) {
+        this.check_out = check_out;
+    }
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
     }
 
     @Override
@@ -93,7 +118,9 @@ public class Guest {
                 ", g_phone='" + g_phone + '\'' +
                 ", g_id_type='" + g_id_type + '\'' +
                 ", g_id_ref='" + g_id_ref + '\'' +
-                ", g_pay_id='" + g_pay_id + '\'' +
+                ", check_in='" + check_in + '\'' +
+                ", check_out='" + check_out + '\'' +
+                ", order_id='" + order_id + '\'' +
                 '}';
     }
 }

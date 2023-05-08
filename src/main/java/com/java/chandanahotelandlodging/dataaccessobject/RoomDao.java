@@ -250,4 +250,30 @@ public class RoomDao
         }
 
     }
+
+    public static Room getRoomByRoomnumber(int roomnumber)
+    {
+        Room room = null;
+        try{
+
+
+            Connection con =ConnectionProvider.getConnection();
+            String sql = "SELECT * FROM ROOM WHERE NUMBER= "+roomnumber;
+
+            PreparedStatement pstmt = con.prepareStatement(sql);
+
+            ResultSet set = pstmt.executeQuery();
+
+            if(set.next())
+            {
+                room = new Room(set.getString(1), set.getString(2), set.getBoolean(3), set.getInt(4), set.getString(5), set.getString(6), set.getString(7));
+            }
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return room;
+    }
 }
